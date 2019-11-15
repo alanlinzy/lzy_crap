@@ -68,7 +68,7 @@ class CRAP(StackingProtocol):
         self.higher_transport = None
         self.deserializer = CrapPacketType.Deserializer()
         self.status = "LISTEN"
-        self.nonce = random.randrange(10000)
+        self.nonce = random.randrange(1000000)
         
 
     def connection_made(self, transport):
@@ -79,12 +79,16 @@ class CRAP(StackingProtocol):
         
         if self.mode == "client":
             print("client init")
-            self.make_key()
-            pktstatus = 0 
-            pkt = HandshakePacket(status=pktstatus, pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce)
-            self.transport.write(pkt.__serialize__())
-            self.status = "HS_SENT"
-            print("client handshake sent")
+
+            try:
+                self.make_key()
+                pktstatus = 0 
+                pkt = HandshakePacket(status=pktstatus, pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce)
+                self.transport.write(pkt.__serialize__())
+                self.status = "HS_SENT"
+                print("client handshake sent")
+            except Exception as e:
+                print(e)
             
     def send_error_handshake_pkt(self):
         pkt = HandshakePacket(status=2)
