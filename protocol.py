@@ -75,8 +75,8 @@ class CRAP(StackingProtocol):
     def connection_made(self, transport):
         print("connection made crap")
         self.transport = transport
-        #self.higher_transport = CRAPTransport(transport)
-        #self.higher_transport.connect_protocol(self)
+        self.higher_transport = CRAPTransport(transport)
+        self.higher_transport.connect_protocol(self)
         
         if self.mode == "client":
             print("client init")
