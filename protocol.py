@@ -165,12 +165,13 @@ class CRAP(StackingProtocol):
                 if self.mode == "client":
                     print("client handshake made")
                     if self.verify_signature(pkt) and self.verify_nonce(pkt):
-                        #verify nonce and signature
+                        print("verify nonce and signature")
                         self.shared_key = self.private_key.exchange(ec.ECDH(), pkt.pk)
                         self.derived_key = get_derived_key(shared_key)
                         nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
                         sendpkt = HandshakePacket(status=1, nonceSignature=nonce_sig)
                         self.transport.write(pkt.__serialize__())
+                        print("sent 2 packet")
                 else:
                     if self.verify_nonce(pkt):
                         self.shared_key = self.private_key.exchange(ec.ECDH(), pkt.pk)
