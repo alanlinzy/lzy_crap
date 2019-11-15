@@ -63,6 +63,7 @@ class CRAPTransport(StackingTransport):
 class CRAP(StackingProtocol):
     def __init__(self,mode):
         super().__init__()
+        print("init crap")
         self.mode = mode
         self.higher_transport = None
         self.deserializer = CrapPacketType.Deserializer()
