@@ -166,6 +166,7 @@ class CRAP(StackingProtocol):
                 print("calling the higher transport")
         else:
             self.send_error_handshake_pkt()
+        return
                 
     def data_pkt_recv(self,pkt):
         print("send data packet")
