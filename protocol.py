@@ -71,8 +71,8 @@ class CRAP(StackingProtocol):
 
     def connection_made(self, transport):
         self.transport = transport
-        self.higher_transport = CRAPTransport(transport)
-        self.higher_transport.connect_protocol(self)
+        #self.higher_transport = CRAPTransport(transport)
+        #self.higher_transport.connect_protocol(self)
         
         if self.mode == "client":
             self.make_key()
