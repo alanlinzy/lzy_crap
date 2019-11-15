@@ -155,8 +155,11 @@ class CRAP(StackingProtocol):
                         sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce)
                         self.transport.write(sendpkt.__serialize__())
                         self.status = "HS_SENT"
+                    else:
+                        self.send_error_handshake_pkt()
                 elif pkt.status == 1:
-                    print("handshake packet status shouldn't be 1 when the server status is LISTEN")      
+                    print("handshake packet status shouldn't be 1 when the server status is LISTEN")
+                    self.send_error_handshake_pkt()
             else:
                 print("miss handshake field")
                 self.send_error_handshake_pkt()
