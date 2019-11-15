@@ -194,7 +194,7 @@ class CRAP(StackingProtocol):
 
     def verify_nonce(self,pkt):
         print("verify nonce")
-        if type(data_to_sign) != bytes:
+        if type(pkt.nonce) != bytes:
             nonce = bytes(pkt.nonce)
         else:
             nonce = pkt.nonce
