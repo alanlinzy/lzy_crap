@@ -140,7 +140,7 @@ class CRAP(StackingProtocol):
             self.transport.close()
         
         elif self.status == "LISTEN":# server get the first packet
-            if pkt.cert and pkt.pk and pkt.signture:
+            if pkt.cert and pkt.pk and pkt.signature:
                 if pkt.status == 0:
                     print("recvive client's first handshake packet")
                     if verify_signature(pkt):
