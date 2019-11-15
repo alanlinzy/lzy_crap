@@ -74,10 +74,11 @@ class CRAP(StackingProtocol):
     def connection_made(self, transport):
         print("connection made crap")
         self.transport = transport
-        self.higher_transport = CRAPTransport(transport)
-        self.higher_transport.connect_protocol(self)
+        #self.higher_transport = CRAPTransport(transport)
+        #self.higher_transport.connect_protocol(self)
         
         if self.mode == "client":
+            print("client init")
             self.make_key()
             pktstatus = 0 
             pkt = HandshakePacket(status=pktstatus, pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce)
