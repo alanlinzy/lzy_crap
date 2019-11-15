@@ -318,11 +318,11 @@ def decrypt(key, associated_data, iv, ciphertext, tag):
     return decryptor.update(ciphertext) + decryptor.finalize()
 
 
-POOPClientFactory = StackingProtocolFactory.CreateFactoryType(
-    lambda: POOP(mode="client"))
+CRAPClientFactory = StackingProtocolFactory.CreateFactoryType(
+    lambda: CRAP(mode="client"))
 
-POOPServerFactory = StackingProtocolFactory.CreateFactoryType(
-    lambda: POOP(mode="server"))
+CRAPServerFactory = StackingProtocolFactory.CreateFactoryType(
+    lambda: CRAP(mode="server"))
 
 
 '''
