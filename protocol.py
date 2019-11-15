@@ -220,12 +220,13 @@ class CRAP(StackingProtocol):
             self.peer_public_key = load_pem_public_key(pkt.pk, default_backend())
             self.peer_cert_public_key = cert_to_verify.public_key()
             self.issuer_public_key = ec.generate_private_key(ec.SECP384R1(), default_backend()).public_key()
-            self.issuer_public_key.verify(cert_to_verify.signature,cert_to_verify.tbs_certificate_bytes,padding.PKCS1v15(),cert_to_verify.signature_hash_algorithm,)
-            self.peer_cert_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())#4 but 5 given
+            #self.issuer_public_key.verify(cert_to_verify.signature,cert_to_verify.tbs_certificate_bytes,padding.PKCS1v15(),cert_to_verify.signature_hash_algorithm,)
+            #self.peer_cert_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())#4 but 5 given
+            cert_to_verify.verify(pkt.signature, pkt.pk, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
             return True
         except Exception as e :
             print(e)
-            return True#False
+            return False
         
                     
     def generate_subject(self, common_name):
