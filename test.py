@@ -1,4 +1,4 @@
-import protocol
+from .. import protocol
 from playground.common.logging import EnablePresetLogging, PRESET_DEBUG, PRESET_VERBOSE
 from playground.asyncio_lib.testing import TestLoopEx
 from playground.network.testing import MockTransportToStorageStream as MockTransport
