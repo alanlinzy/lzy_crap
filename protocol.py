@@ -174,15 +174,19 @@ class CRAP(StackingProtocol):
                         sendpkt = HandshakePacket(status=1, nonceSignature=nonce_sig)
                         self.transport.write(pkt.__serialize__())
                         print("sent 2 packet")
+                    else:
+                        self.send_error_handshake_pkt()
                 else:
                     if self.verify_nonce(pkt):
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key )
                         self.derived_key = get_derived_key(self.shared_key)
                         print("server handshake made")
-                self.status = "ESTABILISHED"
-                self.higherProtocol().connection_made(self.higher_transport)
+                    else:
+                        self.send_error_handshake_pkt()
+                #self.status = "ESTABILISHED"
+                #self.higherProtocol().connection_made(self.higher_transport)
                 
-                print("calling the higher transport")
+                #print("calling the higher transport")
         else:
             self.send_error_handshake_pkt()
         return
@@ -207,7 +211,7 @@ class CRAP(StackingProtocol):
             return True
         except Exception as e :
             print(e)
-            return True#False
+            return False
         
     def verify_signature(self,pkt):
         print("verify signature")
