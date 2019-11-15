@@ -91,7 +91,7 @@ class CRAP(StackingProtocol):
         self.signing_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
         self.verification_key = signing_key.public_key()
         self.issuer_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend()) #no have it right now
-        self.certificate = self.generate_cert(self.generate_subject("subjectname"),self.generate_subject"issuename"),self.verification_key,self.issuer_key)#something I need check which key to use
+        self.certificate = self.generate_cert(self.generate_subject("subjectname"),self.generate_subject("issuename"),self.verification_key,self.issuer_key)#something I need check which key to use
         self.signature = signing_key.sign(self.public_bytes(public_key,"pk"), padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
         
 
@@ -110,9 +110,9 @@ class CRAP(StackingProtocol):
         self.deserializer.update(buffer)
         for pkt in self.deserializer.nextPackets():
             self.printpkt(pkt)
-            if pkt.DEFINITION_IDENTIFIER = HandshakePacket().DEFINITION_IDENTIFIER:
+            if pkt.DEFINITION_IDENTIFIER == HandshakePacket().DEFINITION_IDENTIFIER:
                 self.handshake_pkt_recv(pkt)
-            elif pkt.DEFINITION_IDENTIFIER = DataPacket().DEFINITION_IDENTIFIER:
+            elif pkt.DEFINITION_IDENTIFIER == DataPacket().DEFINITION_IDENTIFIER:
                 self.data_pkt_recv(pkt)
             else:
                 print("wrong packet!")
@@ -146,7 +146,7 @@ class CRAP(StackingProtocol):
                 self.send_error_handshake_pkt()
         elif elf.status == "HS_SENT":#client and server already sent the first packet
             if pkt.status == 1:
-                if self.mode = "client":
+                if self.mode == "client":
                     print("client handshake made")
                     if verify_signature(pkt) and verify_nonce(pkt):
                         #verify nonce and signature
