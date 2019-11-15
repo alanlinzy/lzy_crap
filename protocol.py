@@ -82,9 +82,11 @@ class CRAP(StackingProtocol):
 
             try:
                 self.make_key()
+                print("made key")
                 pktstatus = 0 
                 pkt = HandshakePacket(status=pktstatus, pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce)
                 self.transport.write(pkt.__serialize__())
+                print("send packet")
                 self.status = "HS_SENT"
                 print("client handshake sent")
             except Exception as e:
