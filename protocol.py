@@ -168,7 +168,7 @@ class CRAP(StackingProtocol):
                         print("verify nonce and signature")
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key )
                         print(1)
-                        self.derived_key = get_derived_key(shared_key)
+                        self.derived_key = self.get_derived_key(self.shared_key)
                         print(1)
                         nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
                         print(1)
@@ -178,7 +178,7 @@ class CRAP(StackingProtocol):
                 else:
                     if self.verify_nonce(pkt):
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key )
-                        self.derived_key = get_derived_key(shared_key)
+                        self.derived_key = get_derived_key(self.shared_key)
                         print("server handshake made")
                 self.status = "ESTABILISHED"
                 self.higherProtocol().connection_made(self.higher_transport)
