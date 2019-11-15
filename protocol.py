@@ -167,7 +167,6 @@ class CRAP(StackingProtocol):
                     if self.verify_signature(pkt) and self.verify_nonce(pkt):
                         print("verify nonce and signature")
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key )
-                        print(1)
                         self.derived_key = self.get_derived_key(self.shared_key)
                         print(1)
                         nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
@@ -252,11 +251,11 @@ class CRAP(StackingProtocol):
             critical=False,
         ).sign(issuer_sign_key, hashes.SHA256(), default_backend())
     
-    def get_derived_key(shared_key):
+    def get_derived_key(self,shared_key):
         return HKDF(algorithm=hashes.SHA256(),length=32,salt=None,info=b'handshake data',backend=default_backend()).derive(shared_key)
   
 
-    def printpkt(self, pkt):  # try to print packet content
+    def printpkt(self,pkt):  # try to print packet content
         print("--------------------")
         for f in pkt.FIELDS:
             fname = f[0]
