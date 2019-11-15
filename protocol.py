@@ -96,7 +96,7 @@ class CRAP(StackingProtocol):
 
     def make_key(self):
         self.private_key = ec.generate_private_key(ec.SECP384R1(), default_backend())
-        self.public_key = private_key.public_key()
+        self.public_key = self.private_key.public_key()
         self.signing_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
         self.verification_key = signing_key.public_key()
         self.issuer_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend()) #no have it right now
@@ -166,7 +166,7 @@ class CRAP(StackingProtocol):
                         self.transport.write(pkt.__serialize__())
                 else:
                     if verify_nonce(pkt):
-                        self.shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
+                        self.shared_key = self.private_key.exchange(ec.ECDH(), pkt.pk)
                         self.derived_key = get_derived_key(shared_key)
                         print("server handshake made")
                 self.status = "ESTABILISHED"
