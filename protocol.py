@@ -64,19 +64,18 @@ class CRAPTransport(StackingTransport):
 class CRAP(StackingProtocol):
     def __init__(self,mode):
         super().__init__()
-        print("init crap")
         self.mode = mode
         self.higher_transport = None
         self.deserializer = CrapPacketType.Deserializer()
         self.status = "LISTEN"
         self.nonce = random.randrange(10000)
-        print("init crap finish")
+        
 
     def connection_made(self, transport):
         print("connection made crap")
         self.transport = transport
-        #self.higher_transport = CRAPTransport(transport)
-        #self.higher_transport.connect_protocol(self)
+        self.higher_transport = CRAPTransport(transport)
+        self.higher_transport.connect_protocol(self)
         
         if self.mode == "client":
             self.make_key()
@@ -85,6 +84,7 @@ class CRAP(StackingProtocol):
             self.transport.write(pkt.__serialize__())
             self.status = "HS_SENT"
             print("client handshake sent")
+            
     def send_error_handshake_pkt(self):
         pkt = HandshakePacket(status=2)
         self.transport.write(pkt.__serialize__())
