@@ -188,7 +188,7 @@ class CRAP(StackingProtocol):
         print("send data packet")
 
     def generate_signature(self,sign_key,nonce):
-        if type(data_to_sign) != bytes:
+        if type(nonce) != bytes:
             nonce = bytes(nonce)
         return sign_key.sign( nonce, padding.PSS(mgf=padding.MGF1(hashes.SHA256()),salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
 
@@ -214,7 +214,7 @@ class CRAP(StackingProtocol):
             self.peer_cert_public_key = cert_to_verify.public_key()
             self.issuer_public_key = ec.generate_private_key(ec.SECP384R1(), default_backend()).public_key()
             self.issuer_public_key.verify(cert_to_verify.signature,cert_to_verify.tbs_certificate_bytes,padding.PKCS1v15(),cert_to_verify.signature_hash_algorithm,)
-            self.peer_cert_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
+            self.peer_cert_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())#4 but 5 given
             return True
         except Exception as e :
             print(e)
