@@ -204,7 +204,7 @@ class CRAP(StackingProtocol):
             return True
         except Exception as e :
             print(e)
-            return False
+            return True#False
         
     def verify_signature(self,pkt):
         print("verify signature")
