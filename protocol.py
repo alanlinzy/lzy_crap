@@ -57,7 +57,7 @@ class CRAPTransport(StackingTransport):
     def write(self,data):
         self.protocol.send_data(data)
     def close(self):
-        self.protocol.init_close()
+        self.protocol.close()
     
 
 
