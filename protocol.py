@@ -159,7 +159,7 @@ class CRAP(StackingProtocol):
             else:
                 print("miss handshake field")
                 self.send_error_handshake_pkt()
-        elif elf.status == "HS_SENT":#client and server already sent the first packet
+        elif self.status == "HS_SENT":#client and server already sent the first packet
             if pkt.status == 1:
                 if self.mode == "client":
                     print("client handshake made")
