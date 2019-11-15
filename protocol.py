@@ -112,10 +112,9 @@ class CRAP(StackingProtocol):
 
     def public_bytes(self,subject,check = ""):
         if check == "pk":
-            print(subject.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo))
             return subject.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
         elif check == "cert":
-            return self.subject.public_bytes(Encoding.PEM)
+            return subject.public_bytes(Encoding.PEM)
         else:
             print("can't byte!")
             print(str(subject))
