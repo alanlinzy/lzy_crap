@@ -110,14 +110,14 @@ class CRAP(StackingProtocol):
         self.signature = self.signing_key.sign(self.public_bytes(self.public_key,"pk"), padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
         print("make s")
 
-    def public_bytes(self,subject,check = ""):
+    def public_bytes(self,thesubject,check = ""):
         if check == "pk":
-            return subject.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
+            return thesubject.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
         elif check == "cert":
-            return subject.public_bytes(Encoding.PEM)
+            return thesubject.public_bytes(Encoding.PEM)
         else:
             print("can't byte!")
-            print(str(subject))
+            print(str(thesubject))
             return
 
     def data_received(self,buffer):
