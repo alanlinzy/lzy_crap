@@ -68,8 +68,10 @@ class CRAP(StackingProtocol):
         self.deserializer = CrapPacketType.Deserializer()
         self.status = "LISTEN"
         self.nonce = random.randrange(10000)
+        print("init crap")
 
     def connection_made(self, transport):
+        print("connection made crap")
         self.transport = transport
         #self.higher_transport = CRAPTransport(transport)
         #self.higher_transport.connect_protocol(self)
