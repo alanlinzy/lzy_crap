@@ -335,10 +335,10 @@ def decrypt(key, associated_data, iv, ciphertext, tag):
 
 
 CRAPClientFactory = StackingProtocolFactory.CreateFactoryType(
-    lambda: CRAP(mode="client"))
+    lambda: POOP(mode="client"), lambda: CRAP(mode="client"))
 
 CRAPServerFactory = StackingProtocolFactory.CreateFactoryType(
-    lambda: CRAP(mode="server"))
+    lambda: POOP(mode="server"), lambda: CRAP(mode="server"))
 
 
 '''
