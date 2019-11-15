@@ -132,12 +132,12 @@ class CRAP(StackingProtocol):
                         #verify
                         # verify the signiature  fail: send error else:pass
                         # generate its own ECDH public key
-                        nonce_sig = 
-                        self.shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
-                        self.derived_key = get_derived_key(shared_key)
+                        nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
+                        #self.shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
+                        #self.derived_key = get_derived_key(shared_key)
                         pktstatus = 1 
-                        pkt = HandshakePacket(status=pktstatus, pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"))
-                        self.transport.write(pkt.__serialize__())
+                        sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"), signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce)
+                        self.transport.write(sendpkt.__serialize__())
                         self.status = "HS_SENT"
                 elif pkt.status == 1:
                     print("handshake packet status shouldn't be 1 when the server status is LISTEN")      
@@ -148,37 +148,61 @@ class CRAP(StackingProtocol):
             if pkt.status == 1:
                 if self.mode = "client":
                     print("client handshake made")
-                    if verify_signature(pkt):
+                    if verify_signature(pkt) and verify_nonce(pkt):
+                        #verify nonce and signature
+                        self.shared_key = self.private_key.exchange(ec.ECDH(), pkt.pk)
+                        self.derived_key = get_derived_key(shared_key)
+                        nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
+                        sendpkt = HandshakePacket(status=1, nonceSignature=nonce_sig)
+                        self.transport.write(pkt.__serialize__())
+                else:
+                    if verify_nonce(pkt):
                         self.shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
                         self.derived_key = get_derived_key(shared_key)
-                else:
-                    print("server handshake made")
+                        print("server handshake made")
                 self.status = "ESTABILISHED"
                 self.higherProtocol().connection_made(self.higher_transport)
+                
                 print("calling the higher transport")
         else:
             self.send_error_handshake_pkt()
                 
     def data_pkt_recv(self,pkt):
         print("send data packet")
-        
-    def verify_signature(self,pkt):
-        print("verify key")
+
+    def generate_signature(self,sign_key,nonce):
+        if type(data_to_sign) != bytes:
+            nonce = bytes(nonce)
+        return sign_key.sign( nonce, padding.PSS(mgf=padding.MGF1(hashes.SHA256()),salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
+
+    def verify_nonce(self,pkt):
+        print("verify nonce")
+        if type(data_to_sign) != bytes:
+            nonce = bytes(pkt.nonce)
+        else:
+            nonce = pkt.nonce
+            
         try:
-            self.issuer_public_key = load_pem_public_key(pkt.pk, default_backend())
-            #cert_to_check = x509.load_pem_x509_certificate(pkt.cert, default_backend())
-            self.issuer_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
+            self.peer_cert_public_key.verify(pkt.nonceSignature, nonce, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
             return True
         except Exception as e :
             print(e)
             return False
-        #chosen_hash = hashes.SHA256()
-        #public_key.verify(
-         #   sig,
-          #  data,
-           # ec.ECDSA(chosen_hash)
-        #)
-
+        
+    def verify_signature(self,pkt):
+        print("verify signature")
+        try:
+            cert_to_verify = x509.load_pem_x509_certificate(pkt.cert, default_backend())
+            self.peer_public_key = load_pem_public_key(pkt.pk, default_backend())
+            self.peer_cert_public_key = cert_to_verify.public_key()
+            self.issuer_public_key = ec.generate_private_key(ec.SECP384R1(), default_backend()).public_key()
+            self.issuer_public_key.verify(cert_to_verify.signature,cert_to_verify.tbs_certificate_bytes,padding.PKCS1v15(),cert_to_verify.signature_hash_algorithm,)
+            self.peer_cert_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
+            return True
+        except Exception as e :
+            print(e)
+            return False
+        
                     
     def generate_subject(self, common_name):
         return x509.Name([
@@ -242,35 +266,7 @@ def function():#(self, transport):
         shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
         derived_key = get_derived_key(shared_key)
         return derived_key
-    elif self.mode == "SERVER":
-        # handshake packet
-        if pkt.DEFINITION_IDENTIFIER == "crap.handshakepacket":
-            if pkt.status == 2:
-                print("ERROR PACKET")
-            else:
-                if not pkt.pk:
-                    print("no pk")
-                if not pkt.signture:
-                    print("no sig")
-                if not pkt.cert:
-                    print("no cert")
-                if pkt.cert and pkt.pk and pkt.signture:
-                    private_key = ec.generate_private_key(ec.SECP384R1(), default_backend())
-                    public_key = private_key.public_key()
-                    signing_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
-                    verification_key = signing_key.public_key()
-                    #verify
-                    # verify the signiature  fail: send error else:pass
-                    # generate its own ECDH public key
-                    shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
-                    derived_key = get_derived_key(shared_key)
-                    
-                    
-            
-        else:
-            print("no handshake packet")
                  
-
 
 
 
