@@ -2,6 +2,7 @@ import logging
 import time
 import asyncio
 import datetime
+import random
 from random import randrange
 from playground.network.packet import PacketType
 from playground.network.packet.fieldtypes import UINT8, UINT32, STRING, BUFFER
@@ -66,9 +67,7 @@ class CRAP(StackingProtocol):
         print("init crap")
         self.mode = mode
         self.higher_transport = None
-        print("init crap")
         self.deserializer = CrapPacketType.Deserializer()
-        print("init crap")
         self.status = "LISTEN"
         self.nonce = random.randrange(10000)
         print("init crap finish")
