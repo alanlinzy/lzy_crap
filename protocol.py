@@ -101,7 +101,7 @@ class CRAP(StackingProtocol):
         self.verification_key = self.signing_key.public_key()
         self.issuer_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend()) #no have it right now
         self.certificate = self.generate_cert(self.generate_subject("subjectname"),self.generate_subject("issuename"),self.verification_key,self.issuer_key)#something I need check which key to use
-        self.signature = self.signing_key.sign(self.public_bytes(public_key,"pk"), padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
+        self.signature = self.signing_key.sign(self.public_bytes(self.public_key,"pk"), padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
         
 
     def public_bytes(self,subject,check = ""):
