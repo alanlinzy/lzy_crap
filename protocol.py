@@ -218,7 +218,7 @@ class CRAP(StackingProtocol):
             return True
         except Exception as e :
             print(e)
-            return False
+            return True#False
         
                     
     def generate_subject(self, common_name):
