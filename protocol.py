@@ -143,7 +143,7 @@ class CRAP(StackingProtocol):
             if pkt.cert and pkt.pk and pkt.signature:
                 if pkt.status == 0:
                     print("recvive client's first handshake packet")
-                    if verify_signature(pkt):
+                    if self.verify_signature(pkt):
                         self.make_key()
                         #verify
                         # verify the signiature  fail: send error else:pass
