@@ -66,7 +66,9 @@ class CRAP(StackingProtocol):
         print("init crap")
         self.mode = mode
         self.higher_transport = None
+        print("init crap")
         self.deserializer = CrapPacketType.Deserializer()
+        print("init crap")
         self.status = "LISTEN"
         self.nonce = random.randrange(10000)
         print("init crap finish")
