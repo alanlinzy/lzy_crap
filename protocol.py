@@ -221,7 +221,7 @@ class CRAP(StackingProtocol):
                         sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"),
                                                   signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce,certChain=[self.team2_certification_bytes])
                         self.transport.write(sendpkt.__serialize__())
-                        print("send server firstpacket")
+                        print("send server first packet")
                         self.status = "HS_SENT"
                     else:
                         self.send_error_handshake_pkt()
@@ -288,6 +288,7 @@ class CRAP(StackingProtocol):
 
         try:
             self.peer_verikey.verify(pkt.nonceSignature, self.nonce, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
+            print("nonce!")
             return True
         except Exception as e :
             print(e)
@@ -303,6 +304,7 @@ class CRAP(StackingProtocol):
             #self.issuer_public_key.verify(cert_to_verify.signature,cert_to_verify.tbs_certificate_bytes,padding.PKCS1v15(),cert_to_verify.signature_hash_algorithm,)
             #self.peer_cert_public_key.verify(pkt.signature, pkt.cert, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())#4 but 5 given
             self.peer_verikey.verify(pkt.signature, pkt.pk, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
+            print("signature!")
             return True
         except Exception as e :
             print(e)
