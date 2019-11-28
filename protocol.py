@@ -202,7 +202,7 @@ class CRAP(StackingProtocol):
     def handshake_pkt_recv(self,pkt):
         if pkt.status == 2:
             print("ERROR PACKET")
-            self.transport.close()
+            #self.transport.close()
         
         elif self.status == "LISTEN":# server get the first packet
             if pkt.cert and pkt.pk and pkt.signature:
@@ -254,6 +254,9 @@ class CRAP(StackingProtocol):
     
                         sendpkt = HandshakePacket(status=1, nonceSignature=nonce_sig)
                         self.transport.write(pkt.__serialize__())
+                        self.status = "ESTABILISHED"
+                        self.generate_communicatekey(self.shared_key)
+                        self.higherProtocol().connection_made(self.higher_transport)
                         print("sent 2 packet")
                     else:
                         self.send_error_handshake_pkt()
@@ -263,14 +266,13 @@ class CRAP(StackingProtocol):
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key)
                         self.derived_key = get_derived_key(self.shared_key)
                         print("server handshake made")
+                        self.status = "ESTABILISHED"
+                        self.generate_communicatekey(self.shared_key)
+                        self.higherProtocol().connection_made(self.higher_transport)
                     else:
                         self.send_error_handshake_pkt()
                         return
-                self.status = "ESTABILISHED"
-                self.generate_communicatekey(self.shared_key)
-                self.higherProtocol().connection_made(self.higher_transport)
-                
-                print("calling the higher transport")
+    
         else:
             self.send_error_handshake_pkt()
             return
