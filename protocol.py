@@ -219,7 +219,7 @@ class CRAP(StackingProtocol):
                         nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
                  
                         self.shared_key = self.private_key.exchange(ec.ECDH(), load_pem_public_key(pkt.pk, backend=default_backend()))
-                        self.derived_key = self.get_derived_key(shared_key)
+                        self.derived_key = self.get_derived_key(self.shared_key)
                         self.generate_communicatekey(self.derived_key)
                         #self.higherProtocol().connection_made(self.higher_transport)
                         
