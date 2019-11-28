@@ -156,7 +156,7 @@ class CRAP(StackingProtocol):
             with open("./final_keyfile/20194_root_cert.pem", "rb") as f:
                 self.root_cert = x509.load_pem_x509_certificate(f.read(), default_backend())
                 self.root_public_key = self.root_cert.public_key()
-                print(self.root_public_key)
+                
             with open("./final_keyfile/team2_cert.pem", "rb") as f:
                 self.team2_certification_bytes = f.read()
                 self.team2_cert = x509.load_pem_x509_certificate(self.team2_certification_bytes, default_backend())
@@ -203,6 +203,7 @@ class CRAP(StackingProtocol):
         elif self.status == "LISTEN":# server get the first packet
             if pkt.cert and pkt.pk and pkt.signature:
                 if pkt.status == 0:
+                    print(self.root_public_key)
                     print("recvive client's first handshake packet")
                     self.peer_verikey = x509.load_pem_x509_certificate(pkt.cert, default_backend()).public_key()
                     self.peer_public_key = load_pem_public_key(pkt.pk, backend=default_backend())
