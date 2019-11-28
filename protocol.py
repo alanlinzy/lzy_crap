@@ -204,7 +204,7 @@ class CRAP(StackingProtocol):
                     print("recvive client's first handshake packet")
                     self.peer_verikey = x509.load_pem_x509_certificate(pkt.cert, default_backend()).public_key()
                     self.peer_public_key = load_pem_public_key(pkt.pk, backend=default_backend())
-                    if self.verify_signature(pkt) and verify_chain(pkt.certChain) and verify_cert(pkt.cert):
+                    if self.verify_signature(pkt) and self.verify_chain(pkt.certChain) and self.verify_cert(pkt.cert):
                         #verify
                         # verify the signiature  fail: send error else:pass
                         # generate its own ECDH public key
@@ -233,7 +233,7 @@ class CRAP(StackingProtocol):
                     print("client handshake made")
                     self.peer_verikey = x509.load_pem_x509_certificate(pkt.cert, default_backend()).public_key()
                     self.peer_public_key = load_pem_public_key(pkt.pk, backend=default_backend())
-                    if self.verify_signature(pkt) and self.verify_nonce(pkt) and verify_chain(pkt.certChain) and verify_cert(pkt.cert):
+                    if self.verify_signature(pkt) and self.verify_nonce(pkt) and self.verify_chain(pkt.certChain) and self.verify_cert(pkt.cert):
                         print("verify nonce and signature")
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key )
                         self.derived_key = self.get_derived_key(self.shared_key)
