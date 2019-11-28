@@ -314,7 +314,7 @@ class CRAP(StackingProtocol):
     def verify_chain(self,chain):
         print("verify chain")
         for c in range(len(chain)):
-            cert_to_verify = x509.load_pem_x509_certificate(certChain[c], default_backend())
+            cert_to_verify = x509.load_pem_x509_certificate(chain[c], default_backend())
             try:
                 public_key.verify(cert_to_verify.signature, cert_to_verify.tbs_certificate_bytes, padding.PKCS1v15(), cert_to_verify.signature_hash_algorithm)
                 self.peer_root_verikey = cert_to_verify.public_key()
