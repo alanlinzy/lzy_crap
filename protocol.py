@@ -220,6 +220,7 @@ class CRAP(StackingProtocol):
                  
                         self.shared_key = self.private_key.exchange(ec.ECDH(), load_pem_public_key(pkt.pk, backend=default_backend()))
                         self.generate_communicatekey(self.shared_key)
+                        self.higherProtocol().connection_made(self.higher_transport)
                         #self.derived_key = get_derived_key(shared_key)
                         pktstatus = 1 
                         sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"),
