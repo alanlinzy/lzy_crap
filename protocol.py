@@ -217,7 +217,7 @@ class CRAP(StackingProtocol):
                     
                         nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
                  
-                        self.shared_key = self.private_key.exchange(ec.ECDH(), pkt.pk)
+                        self.shared_key = self.private_key.exchange(ec.ECDH(), self.public_bytes(pkt.pk,"pk"))
                         self.generate_communicatekey(self.shared_key)
                         #self.derived_key = get_derived_key(shared_key)
                         pktstatus = 1 
