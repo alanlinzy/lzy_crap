@@ -276,13 +276,13 @@ class CRAP(StackingProtocol):
         print("send data packet")
         # encrypt (key, plaintext, associated_data) -> (iv, ciphertext, encryptor.tag)
         # decrypt  (key, associated_data, iv, ciphertext, tag) -> decryptor.update(ciphertext) + decryptor.finalize()
-        if self.status == "ESTABILISHED":
-            plaintext = data_dec(pkt.data)
-            self.higherProtocol().data_received(plaintext)
-        else:
-            self.printpkt(pkt)
-            self.send_error_handshake_pkt()
-            return
+        #if self.status == "ESTABILISHED":
+        plaintext = data_dec(pkt.data)
+        self.higherProtocol().data_received(plaintext)
+        #else:
+         #   self.printpkt(pkt)
+          #  self.send_error_handshake_pkt()
+           # return
             
 
     def generate_signature(self,sign_key,nonce):
