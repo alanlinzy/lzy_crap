@@ -280,6 +280,7 @@ class CRAP(StackingProtocol):
             plaintext = data_dec(pkt.data)
             self.higherProtocol().data_received(plaintext)
         else:
+            self.printpkt(pkt)
             self.send_error_handshake_pkt()
             return
             
