@@ -183,7 +183,7 @@ class CRAP(StackingProtocol):
         print("recive packets!")
         self.deserializer.update(buffer)
         for pkt in self.deserializer.nextPackets():
-            self.printpkt(pkt)
+            #self.printpkt(pkt)
             if pkt.DEFINITION_IDENTIFIER == HandshakePacket().DEFINITION_IDENTIFIER:
                 self.handshake_pkt_recv(pkt)
             elif pkt.DEFINITION_IDENTIFIER == DataPacket().DEFINITION_IDENTIFIER:
