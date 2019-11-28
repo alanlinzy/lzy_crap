@@ -232,8 +232,8 @@ class CRAP(StackingProtocol):
                         return
                     else:
                         self.send_error_handshake_pkt()
-                        self.higherProtocol().connection_lost(None)
-                        self.transport.close()
+                        #self.higherProtocol().connection_lost(None)
+                        #self.transport.close()
                         return
                 elif pkt.status == 1:
                     print("handshake packet status shouldn't be 1 when the server status is LISTEN")
@@ -244,6 +244,7 @@ class CRAP(StackingProtocol):
                 self.send_error_handshake_pkt()
                 return
         elif self.status == "HS_SENT":#client and server already sent the first packet
+            print("HS_SENT")
             if pkt.status == 1:
                 if self.mode == "client":
                     print("client handshake made")
