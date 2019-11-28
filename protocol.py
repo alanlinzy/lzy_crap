@@ -358,7 +358,7 @@ class CRAP(StackingProtocol):
         hash1 = self.digest_hash(shared_secret)
         hash2 = self.digest_hash(hash1)
         hash3 = self.digest_hash(hash2)
-        if self.mode = "client":
+        if self.mode == "client":
             self.iv = hash1[0:12]
             self.peer_iv = hash1[12:24]
             self.enc_key = hash2[0:16]
