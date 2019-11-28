@@ -221,6 +221,7 @@ class CRAP(StackingProtocol):
                         sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"),
                                                   signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce,certChain=[self.team2_certification_bytes])
                         self.transport.write(sendpkt.__serialize__())
+                        print("send server firstpacket")
                         self.status = "HS_SENT"
                     else:
                         self.send_error_handshake_pkt()
@@ -243,7 +244,7 @@ class CRAP(StackingProtocol):
                         print("verify nonce and signature")
                         self.shared_key = self.private_key.exchange(ec.ECDH(), self.peer_public_key )
                         self.derived_key = self.get_derived_key(self.shared_key)
-                        
+
                         nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
     
                         sendpkt = HandshakePacket(status=1, nonceSignature=nonce_sig)
