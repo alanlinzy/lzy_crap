@@ -155,7 +155,7 @@ class CRAP(StackingProtocol):
             self.team2_verification_key_bytes = self.team2_verification_key.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
         with open("./final_keyfile/20194_root_cert.pem", "rb") as f:
             self.root_cert = x509.load_pem_x509_certificate(f.read(), default_backend())
-            self.root_publikey = self.root_cert.public_key()
+            self.root_public_key = self.root_cert.public_key()
 
         with open("./final_keyfile/team2_cert.pem", "rb") as f:
             self.team2_certification_bytes = f.read()
@@ -316,7 +316,7 @@ class CRAP(StackingProtocol):
         for c in range(len(chain)):
             cert_to_verify = x509.load_pem_x509_certificate(chain[c], default_backend())
             try:
-                self.root_pubk.verify(cert_to_verify.signature, cert_to_verify.tbs_certificate_bytes, padding.PKCS1v15(), cert_to_verify.signature_hash_algorithm)
+                self.root_public_key.verify(cert_to_verify.signature, cert_to_verify.tbs_certificate_bytes, padding.PKCS1v15(), cert_to_verify.signature_hash_algorithm)
                 self.peer_root_verikey = cert_to_verify.public_key()
                 print("chain!")
                 return True
