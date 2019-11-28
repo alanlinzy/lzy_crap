@@ -4,9 +4,9 @@ import asyncio
 import datetime
 import random
 import os
-import binascii
+import binascii#?
 import bisect#?
-import hashlib#?
+import hashlib
 from random import randrange
 from playground.network.packet import PacketType
 from playground.network.packet.fieldtypes import UINT8, UINT32, STRING, BUFFER
