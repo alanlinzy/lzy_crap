@@ -406,7 +406,7 @@ class CRAP(StackingProtocol):
     def data_dec(self,data):#no
         decryptor = Cipher(
            algorithms.AES(self.dec_key),
-           modes.GCM(self.peer_iv, tag),
+           modes.GCM(self.peer_iv, None),
            backend=default_backend()
         ).decryptor()
         decryptor.authenticate_additional_data(None)
