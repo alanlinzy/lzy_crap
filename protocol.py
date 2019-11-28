@@ -141,7 +141,7 @@ class CRAP(StackingProtocol):
         print("error packet!")
         pkt = HandshakePacket(status=2)
         self.transport.write(pkt.__serialize__())
-        self.transport.close()
+
 
     def make_key(self):
         self.private_key = ec.generate_private_key(ec.SECP384R1(), default_backend())
