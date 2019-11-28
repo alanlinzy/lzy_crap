@@ -403,6 +403,7 @@ class CRAP(StackingProtocol):
         ciphertext = encryptor.update(data) + encryptor.finalize()
         self.transport.write(DataPacket(data=cipher_text).__serialize__())
         self.iv = (int.from_bytes(self.iv, "big")+1).to_bytes(12,"big")#?
+        print("fin enc")
     
     def data_dec(self,data):#no
         print("dec")
@@ -413,6 +414,7 @@ class CRAP(StackingProtocol):
         ).decryptor()
         decryptor.authenticate_additional_data(None)
         self.peer_iv = (int.from_bytes(self.peer_iv, "big")+1).to_bytes(12,"big")
+        print("fin dec")
         return decryptor.update(data) + decryptor.finalize()
         
     def printpkt(self,pkt):  # try to print packet content
