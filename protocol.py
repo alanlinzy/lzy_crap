@@ -210,26 +210,24 @@ class CRAP(StackingProtocol):
                     print("recvive client's first handshake packet")
                     self.peer_verikey = x509.load_pem_x509_certificate(pkt.cert, default_backend()).public_key()
                     self.peer_public_key = load_pem_public_key(pkt.pk, backend=default_backend())
-                    #if self.verify_signature(pkt) and self.verify_chain(pkt.certChain) and self.verify_cert(pkt.cert):
+                    if self.verify_signature(pkt) and self.verify_chain(pkt.certChain) and self.verify_cert(pkt.cert):
                         #verify
                         # verify the signiature  fail: send error else:pass
                         # generate its own ECDH public key
-                    self.verify_signature(pkt)
-                    self.verify_chain(pkt.certChain)
-                    self.verify_cert(pkt.cert)
-                    nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
-                    print(nonce_sig)
+                    
+                        nonce_sig = self.generate_signature(self.signing_key, pkt.nonce)
+                 
                         #self.shared_key = private_key.exchange(ec.ECDH(), pkt.pk)
                         #self.derived_key = get_derived_key(shared_key)
-                    pktstatus = 1 
-                    sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"),
+                        pktstatus = 1 
+                        sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"),
                                                   signature=self.signature, cert=self.public_bytes(self.certificate,"cert"),nonce=self.nonce,certChain=[self.team2_certification_bytes])
-                    self.transport.write(sendpkt.__serialize__())
-                    print("send server first packet")
-                    self.status = "HS_SENT"
-                    #else:
-                     #   self.send_error_handshake_pkt()
-                      #  return
+                        self.transport.write(sendpkt.__serialize__())
+                        print("send server first packet")
+                        self.status = "HS_SENT"
+                    else:
+                        self.send_error_handshake_pkt()
+                        return
                 elif pkt.status == 1:
                     print("handshake packet status shouldn't be 1 when the server status is LISTEN")
                     self.send_error_handshake_pkt()
