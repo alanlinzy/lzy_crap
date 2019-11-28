@@ -9,7 +9,7 @@ import bisect#?
 import hashlib
 from random import randrange
 from playground.network.packet import PacketType
-from playground.network.packet.fieldtypes import UINT8, UINT32, STRING, BUFFER
+from playground.network.packet.fieldtypes import UINT8, UINT32, STRING, BUFFER, LIST
 from playground.network.packet.fieldtypes.attributes import Optional
 from playground.network.common import StackingProtocolFactory, StackingProtocol, StackingTransport
 
