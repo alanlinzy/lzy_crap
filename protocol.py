@@ -284,8 +284,9 @@ class CRAP(StackingProtocol):
             
 
     def generate_signature(self,sign_key,nonce):
-        if type(nonce) != bytes:
-            nonce = bytes(nonce)
+        print("generate sign")
+        #if type(nonce) != bytes:
+         #   nonce = bytes(nonce)
         return sign_key.sign(str(pkt.nonce).encode('ASCII'), padding.PSS(mgf=padding.MGF1(hashes.SHA256()),salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
 
     def verify_nonce(self,pkt):
