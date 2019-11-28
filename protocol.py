@@ -24,7 +24,8 @@ from ..poop.protocol import POOP
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 logger = logging.getLogger("playground.__connector__." + __name__)
-path = os.dirname(os.dirname(os.abspath(__file__)))
+from os.path import dirname, abspath
+path = dirname(dirname(abspath(__file__)))
 # pakcet part
 '''
 class CrapPacketType(PacketType):# milestone1 packet
