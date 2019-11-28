@@ -301,7 +301,7 @@ class CRAP(StackingProtocol):
             print(e)
             return False
         
-    def vertify_cert(self,cert):
+    def verify_cert(self,cert):
         print("verify cert")
         try:
             cert_to_verify = x509.load_pem_x509_certificate(cert, default_backend())
@@ -311,7 +311,7 @@ class CRAP(StackingProtocol):
             print(e)
             return False
 
-    def vertify_chain(self,chain):
+    def verify_chain(self,chain):
         print("verify chain")
         for c in range(len(chain)):
             cert_to_verify = x509.load_pem_x509_certificate(certChain[c], default_backend())
