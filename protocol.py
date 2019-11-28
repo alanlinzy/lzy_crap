@@ -148,18 +148,20 @@ class CRAP(StackingProtocol):
         self.signing_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
     
         self.verification_key = self.signing_key.public_key()
-        
-        with open("./final_keyfile/team2_key.pem", "rb") as f:
-            self.team2_signing_key = load_pem_private_key(f.read(), password=None, backend=default_backend())
-            self.team2_verification_key = self.signing_key.public_key()
-            self.team2_verification_key_bytes = self.team2_verification_key.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
-        with open("./final_keyfile/20194_root_cert.pem", "rb") as f:
-            self.root_cert = x509.load_pem_x509_certificate(f.read(), default_backend())
-            self.root_public_key = self.root_cert.public_key()
+        try:
+            with open("./final_keyfile/team2_key.pem", "rb") as f:
+                self.team2_signing_key = load_pem_private_key(f.read(), password=None, backend=default_backend())
+                self.team2_verification_key = self.signing_key.public_key()
+                self.team2_verification_key_bytes = self.team2_verification_key.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
+            with open("./final_keyfile/20194_root_cert.pem", "rb") as f:
+                self.root_cert = x509.load_pem_x509_certificate(f.read(), default_backend())
+                self.root_public_key = self.root_cert.public_key()
 
-        with open("./final_keyfile/team2_cert.pem", "rb") as f:
-            self.team2_certification_bytes = f.read()
-            self.team2_cert = x509.load_pem_x509_certificate(self.team2_certification_bytes, default_backend())
+            with open("./final_keyfile/team2_cert.pem", "rb") as f:
+                self.team2_certification_bytes = f.read()
+                self.team2_cert = x509.load_pem_x509_certificate(self.team2_certification_bytes, default_backend())
+        except Exception as e:
+            print(e)
 
         #self.issuer_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend()) #team2 key
         #certificate
@@ -316,7 +318,6 @@ class CRAP(StackingProtocol):
         for c in range(len(chain)):
             cert_to_verify = x509.load_pem_x509_certificate(chain[c], default_backend())
             try:
-                self.root_cert.public_key()
                 self.root_public_key.verify(cert_to_verify.signature, cert_to_verify.tbs_certificate_bytes, padding.PKCS1v15(), cert_to_verify.signature_hash_algorithm)
                 self.peer_root_verikey = cert_to_verify.public_key()
                 print("chain!")
