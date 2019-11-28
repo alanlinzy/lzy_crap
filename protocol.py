@@ -309,7 +309,8 @@ class CRAP(StackingProtocol):
         print("verify cert")
         try:
             cert_to_verify = x509.load_pem_x509_certificate(cert, default_backend())
-            self.peer_root_verikey.verify(cert.signature, cert.tbs_certificate_bytes, padding.PKCS1v15(), cert.signature_hash_algorithm)
+            self.peer_root_verikey.verify(cert_to_verify.signature, cert_to_verify.tbs_certificate_bytes, padding.PKCS1v15(), cert_to_verify.signature_hash_algorithm)
+            print("cert!")
             return True
         except Exception as e:
             print(e)
