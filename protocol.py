@@ -279,6 +279,9 @@ class CRAP(StackingProtocol):
         if self.status == "ESTABILISHED":
             plaintext = data_dec(pkt.data)
             self.higherProtocol().data_received(plaintext)
+        else:
+            self.send_error_handshake_pkt()
+            return
             
 
     def generate_signature(self,sign_key,nonce):
