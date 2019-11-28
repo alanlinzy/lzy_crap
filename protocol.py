@@ -393,6 +393,7 @@ class CRAP(StackingProtocol):
         return tep.digest()
         
     def data_enc(self,data):#no
+        print("enc")
         encryptor = Cipher(
             algorithms.AES(self.enc_key),
             modes.GCM(self.iv),
@@ -404,6 +405,7 @@ class CRAP(StackingProtocol):
         self.iv = (int.from_bytes(self.iv, "big")+1).to_bytes(12,"big")#?
     
     def data_dec(self,data):#no
+        print("dec")
         decryptor = Cipher(
            algorithms.AES(self.dec_key),
            modes.GCM(self.peer_iv, None),
