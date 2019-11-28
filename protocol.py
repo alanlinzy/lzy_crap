@@ -125,7 +125,7 @@ class CRAP(StackingProtocol):
         self.higher_transport = CRAPTransport(transport)
         self.higher_transport.connect_protocol(self)
         self.make_key()
-        print("made key")
+        #print("made key")
         if self.mode == "client":
             print("client init")
             try:
@@ -184,7 +184,7 @@ class CRAP(StackingProtocol):
             return
 
     def data_received(self,buffer):
-        print("recive packets!")
+        #print("recive packets!")
         self.deserializer.update(buffer)
         for pkt in self.deserializer.nextPackets():
             #self.printpkt(pkt)
@@ -299,7 +299,7 @@ class CRAP(StackingProtocol):
             
 
     def generate_signature(self,sign_key,nonce):
-        print("generate sign")
+        #print("generate sign")
         #if type(nonce) != bytes:
          #   nonce = bytes(nonce)
         return sign_key.sign(str(nonce).encode('ASCII'), padding.PSS(mgf=padding.MGF1(hashes.SHA256()),salt_length=padding.PSS.MAX_LENGTH),hashes.SHA256())
@@ -315,7 +315,7 @@ class CRAP(StackingProtocol):
             return False
         
     def verify_signature(self,pkt):
-        print("verify signature")
+        #print("verify signature")
         try:
             #cert_to_verify = x509.load_pem_x509_certificate(pkt.cert, default_backend())
             #self.peer_public_key = load_pem_public_key(pkt.pk, default_backend())
@@ -331,7 +331,7 @@ class CRAP(StackingProtocol):
             return False
         
     def verify_cert(self,cert):
-        print("verify cert")
+        #print("verify cert")
         try:
             cert_to_verify = x509.load_pem_x509_certificate(cert, default_backend())
             self.peer_root_verikey.verify(cert_to_verify.signature, cert_to_verify.tbs_certificate_bytes, padding.PKCS1v15(), cert_to_verify.signature_hash_algorithm)
@@ -342,7 +342,7 @@ class CRAP(StackingProtocol):
             return False
 
     def verify_chain(self,chain):
-        print("verify chain")
+        #print("verify chain")
         for c in range(len(chain)):
             cert_to_verify = x509.load_pem_x509_certificate(chain[c], default_backend())
             try:
