@@ -228,8 +228,11 @@ class CRAP(StackingProtocol):
                         self.transport.write(sendpkt.__serialize__())
                         print("send server first packet")
                         self.status = "HS_SENT"
+                        return
                     else:
                         self.send_error_handshake_pkt()
+                        self.higherProtocol().connection_lost(None)
+                        self.transport.close()
                         return
                 elif pkt.status == 1:
                     print("handshake packet status shouldn't be 1 when the server status is LISTEN")
