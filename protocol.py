@@ -412,7 +412,9 @@ class CRAP(StackingProtocol):
            modes.GCM(self.peer_iv, None),
            backend=default_backend()
         ).decryptor()
+        print(1)
         decryptor.authenticate_additional_data(None)
+        print(1)
         self.peer_iv = (int.from_bytes(self.peer_iv, "big")+1).to_bytes(12,"big")
         print("fin dec")
         return decryptor.update(data) + decryptor.finalize()
