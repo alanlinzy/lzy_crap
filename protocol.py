@@ -101,6 +101,7 @@ class CRAPTransport(StackingTransport):
     def connect_protocol(self,protocol):
         self.protocol =protocol
     def write(self,data):
+        print("send packet")
         self.protocol.data_enc(data)
     def close(self):
         self.protocol.connection_lost(None)
