@@ -187,6 +187,7 @@ class CRAP(StackingProtocol):
             elif pkt.DEFINITION_IDENTIFIER == DataPacket().DEFINITION_IDENTIFIER:
                 self.data_pkt_recv(pkt)
             elif pkt.DEFINITION_IDENTIFIER == ErrorPacket().DEFINITION_IDENTIFIER:
+                print("error:")
                 print(pkt.message)
             else:
                 print("wrong packet!")
