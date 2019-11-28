@@ -149,15 +149,15 @@ class CRAP(StackingProtocol):
     
         self.verification_key = self.signing_key.public_key()
         try:
-            with open("./keyfile/team2_key.pem", "rb") as f:
+            with open("../keyfile/team2_key.pem", "rb") as f:
                 self.team2_signing_key = load_pem_private_key(f.read(), password=None, backend=default_backend())
                 self.team2_verification_key = self.signing_key.public_key()
                 self.team2_verification_key_bytes = self.team2_verification_key.public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
-            with open("./keyfile/20194_root_cert.pem", "rb") as f:
+            with open("../keyfile/20194_root_cert.pem", "rb") as f:
                 self.root_cert = x509.load_pem_x509_certificate(f.read(), default_backend())
                 self.root_public_key = self.root_cert.public_key()
                 
-            with open("./keyfile/team2_cert.pem", "rb") as f:
+            with open("../keyfile/team2_cert.pem", "rb") as f:
                 self.team2_certification_bytes = f.read()
                 self.team2_cert = x509.load_pem_x509_certificate(self.team2_certification_bytes, default_backend())
         except Exception as e:
