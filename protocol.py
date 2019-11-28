@@ -305,7 +305,7 @@ class CRAP(StackingProtocol):
     def verify_nonce(self,pkt):
 
         try:
-            self.peer_verikey.verify(pkt.nonceSignature, str(self.nonce).encode('ASCII'), padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
+            self.peer_verikey.verify(pkt.nonceSignature, self.nonce, padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH), hashes.SHA256())
             print("nonce!")
             return True
         except Exception as e :
