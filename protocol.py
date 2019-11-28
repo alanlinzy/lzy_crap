@@ -220,7 +220,7 @@ class CRAP(StackingProtocol):
                  
                         self.shared_key = self.private_key.exchange(ec.ECDH(), load_pem_public_key(pkt.pk, backend=default_backend()))
                         self.generate_communicatekey(self.shared_key)
-                        self.higherProtocol().connection_made(self.higher_transport)
+                        #self.higherProtocol().connection_made(self.higher_transport)
                         #self.derived_key = get_derived_key(shared_key)
                         pktstatus = 1 
                         sendpkt = HandshakePacket(status=pktstatus,nonceSignature=nonce_sig,pk=self.public_bytes(self.public_key,"pk"),
@@ -281,13 +281,13 @@ class CRAP(StackingProtocol):
         print("send data packet")
         # encrypt (key, plaintext, associated_data) -> (iv, ciphertext, encryptor.tag)
         # decrypt  (key, associated_data, iv, ciphertext, tag) -> decryptor.update(ciphertext) + decryptor.finalize()
-        #if self.status == "ESTABILISHED":
-        plaintext = self.data_dec(pkt.data)
-        self.higherProtocol().data_received(plaintext)
-        #else:
-         #   self.printpkt(pkt)
-          #  self.send_error_handshake_pkt()
-           # return
+        if self.status == "ESTABILISHED":
+            plaintext = self.data_dec(pkt.data)
+            self.higherProtocol().data_received(plaintext)
+        else:
+            self.printpkt(pkt)
+            self.send_error_handshake_pkt()
+            return
             
 
     def generate_signature(self,sign_key,nonce):
