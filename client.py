@@ -2,7 +2,7 @@ import asyncio
 import playground
 import sys
 
-from autograder_ex8_packets import *
+from autograder_lab2_packets import *
 from cmdHandler import *
 from class_packet import *
 # from playground.common.logging import EnablePresetLogging, PRESET_DEBUG

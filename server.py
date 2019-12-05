@@ -10,7 +10,7 @@ import string
 from cmdHandler import printx, DataHandler, BankManager, printError
 # from escape_room_006 import EscapeRoomGame
 from escape_room_010 import EscapeRoomGame
-from autograder_ex8_packets import *
+from autograder_lab2_packets import *
 from class_packet import *
 
 
