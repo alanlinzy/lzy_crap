@@ -8,7 +8,7 @@ from class_packet import *
 # from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
 # EnablePresetLogging(PRESET_DEBUG)
 
-IPADDR = "20191.2.57.98"
+IPADDR = "localhost"
 PORT = 2222
 # bank params
 TEST_UNAME = "test"  # TODO:make sure of this
