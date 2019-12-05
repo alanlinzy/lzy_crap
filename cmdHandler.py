@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(1, '../BitPoints-Bank-Playground3/src/')
-from autograder_ex8_packets import *
+from autograder_lab2_packets import *
 # from escape_room_006 import EscapeRoomGame
 from escape_room_010 import EscapeRoomGame
 from class_packet import *
