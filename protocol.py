@@ -103,8 +103,6 @@ class CRAPTransport(StackingTransport):
     def write(self,data):
         self.protocol.data_enc(data)
 
-    
-
 
 # tls handshake part
 class CRAP(StackingProtocol):
